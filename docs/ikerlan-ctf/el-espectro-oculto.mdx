@@ -1,0 +1,54 @@
+---
+title: El espectro oculto
+description: Análisis del desafío "El espectro oculto" del Ikerlan CTF 2024.
+date: 2025-10-16
+---
+
+## Descripción del desafío
+
+Un extraño archivo de audio fue interceptado desde una transmisión de radioaficionados que afirmaban haber contactado con la Estación Espacial Internacional. Sin embargo, al analizarlo, parece que no contiene palabras, sino un misterioso patrón de tonos. ¿Podrás descifrar el mensaje oculto que enviaron desde el espacio?
+
+<audio controls>
+  <source src={require('./assets/unknown_audio.wav').default} type="audio/wav" />
+</audio>
+
+[Descargar archivo de audio](./assets/unknown_audio.wav)
+
+## Análisis inicial
+Mi idea inicial fue abrir el archivo de audio en un editor de espectrogramas para visualizar los patrones de frecuencia. Para ello, utilicé Audacity.
+
+![Seleccionando la visualización del espectrograma en la pista de audio](./assets/audacity1.png)
+
+Al cambiar la vista a espectrograma y hacer un poco de zoom, pude observar una serie de patrones que parecían repetirse a lo largo del tiempo. Tenía la esperanza de que la flag estuviera directamente escrita en el espectrograma, pero no fue así.
+
+El espectrograma completo:
+![Espectrograma](./assets/audacity3.png)
+Si ampliamos el inicio, podemos ver mejor los patrones:
+![Espectrograma con zoom](./assets/audacity2.png)
+
+## Hipótesis sobre la codificación
+
+Investigando sobre tipos de codificación de audio, encontré algunas de estas opciones:
+- **Código Morse**: Utilizado en transmisiones de radio. Se caracteriza por tonos cortos y largos (puntos y rayas). Escuchando el audio, los tonos parecen tener la misma duración, lo que descarta esta opción.
+- **DTMF (Dual-Tone Multi-Frequency)**: Utilizado en tonos de marcación telefónica. Cada tecla genera una combinación de dos frecuencias. Nuestro espectrograma muestra múltiples frecuencias simultáneas, lo que no coincide.
+- **FSK (Frequency-Shift Keying)**: Utilizado en modems y radioaficionados. Cambia entre dos frecuencias para representar bits 0 y 1. Nuestro espectrograma muestra múltiples frecuencias simultáneas, lo que no coincide. Podríamos valorar MFSK (Multi-Frequency Shift Keying, que usa más de dos frecuencias), pero no parece el caso.
+- **PSK (Phase-Shift Keying)**: Utilizado en comunicaciones digitales. Cambia la fase de una señal portadora para representar datos. Aunque es más complejo, nuestro espectrograma no muestra cambios claros de fase.
+
+
+| Tipo | Imagen |
+| --- | --- |
+| Nuestro espectrograma | ![Nuestro espectrograma](./assets/ctf_spectrogram.png) |
+| DTMF | ![Un espectrograma de DTMF](./assets/dtmf_spectrogram.png) |
+| MFSK | ![Un espectrograma de MFSK](./assets/mfsk_spectrogram.png) |
+| PSK | ![Un espectrograma de PSK](./assets/psk_spectrogram.png) |
+
+## Profundizando en el contexto
+
+Buscando más información sobre la Estación Espacial Internacional y en subreddits de radioaficionados, encontré que a menudo suelen transmitir imágenes SSTV (Slow Scan Television). Estas imágenes se envían utilizando tonos de audio que representan píxeles de la imagen.
+
+Utilizando [una herramienta en línea para decodificar SSTV](https://sstv-decoder.mathieurenaud.fr/), subí el archivo de audio y obtuve la siguiente imagen:
+
+![Imagen decodificada](./assets/decoded-sstv-image.png)
+
+En la imagen decodificada, aunque borrosa, se puede distinguir un texto que parece ser la flag del desafío.
+La flag es: `ikerlan{excuse_the_noise_jeje}`.
