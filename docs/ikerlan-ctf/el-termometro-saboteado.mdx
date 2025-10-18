@@ -1,0 +1,62 @@
+---
+title: El termómetro saboteado (200)
+---
+
+## Descripción del desafío
+
+El laboratorio de IoT de la universidad tiene un sistema de monitorización de temperatura con varios Arduinos distribuidos por el edificio. Cada Arduino lee un sensor DHT22 y envía los datos cada minuto a un servidor central. Esta mañana, el técnico de sistemas notó algo extraño: uno de los sensores (Sensor_Lab_B3) está reportando temperaturas imposibles de forma intermitente:
+- [09:00] Sensor_Lab_B3: 22.4°C ✓ Normal
+- [09:01] Sensor_Lab_B3: 23.1°C ✓ Normal
+- [09:02] Sensor_Lab_B3: 104.0°C ¡Imposible!
+- [09:03] Sensor_Lab_B3: 22.8°C ✓ Normal
+- [09:04] Sensor_Lab_B3: 52.0°C ¡Imposible!
+- [09:05] Sensor_Lab_B3: 23.2°C ✓ Normal
+- [09:06] Sensor_Lab_B3: 99.0°C ¡Imposible!
+- ...
+
+Al revisar el Arduino físicamente, todo parece normal. El sensor funciona bien. Pero alguien modificó el código para que ocasionalmente reporte "temperaturas falsas" que en realidad son... un mensaje secreto. Tu misión: Analizar el log de temperaturas de las últimas 24 horas y descubrir qué mensaje está escondido en esas lecturas "imposibles".
+
+Formato de la flag: ikerlan\{mensaje_oculto\}
+
+[Descargar log de temperaturas](./assets/temperature_log.csv)
+
+## Análisis inicial
+
+Lo primero que hago es descargar el archivo CSV con el log de temperaturas y abrirlo en un editor de texto para echar un vistazo rápido a su contenido.
+
+![Tabla de temperaturas](./assets/temperature_log.png)
+
+Echando un vistazo rápido, los valores de las temperaturas "imposibles" parecen estar en un rango entre 50 y 150 grados Celsius. Sospecho que estos valores podrían estar codificando caracteres ASCII, ya que los caracteres imprimibles en ASCII van desde el 32 (espacio) hasta el 126 (~).
+
+## Extracción de temperaturas "imposibles"
+
+Para extraer las temperaturas "imposibles" del CSV, escribo un pequeño script en Python que lea el archivo, filtre las temperaturas marcadas como "ANOMALY" y convierta esos valores a caracteres ASCII.
+
+```python showLineNumbers="true" title="extract_message.py"
+import csv
+
+# Ruta del CSV
+csv_path = "temperature_log.csv"
+
+mensaje = ""
+
+with open(csv_path, newline='', encoding='utf-8') as csvfile:
+    lector = csv.DictReader(csvfile, delimiter=',')
+    for fila in lector:
+        if fila['status'].strip().upper() == "ANOMALY":
+            # Cambiar coma por punto y convertir a float
+            temperatura = float(fila['temperature'].replace(',', '.'))
+            # Convertir a entero y luego a carácter ASCII
+            mensaje += chr(int(temperatura))
+
+print("Mensaje oculto:", mensaje)
+```
+
+Al ejecutar este script, obtengo el siguiente mensaje oculto:
+
+```
+$ python extract_message.py
+Mensaje oculto: h4ck3d_by_stud3ntsh4ck3d_by_stud3ntsh4ck3d_by_stud3ntsh4ck3d_by_stud3ntsh4ck3d_by_stud3ntsh4ck3d_by_stud3ntsh4ck3d_by_stud3ntsh4ck3d_by_stud3ntsh4ck3d_by_stud3ntsh4ck3d_by_stud3ntsh4ck3d_by_stud3ntsh4ck3d_by_stud3ntsh4ck3d_by_stud3ntsh4ck3d_by_stud3ntsh4ck3d_by_stud3ntsh4ck3d_by_stud3ntsh4ck3d_by_stud3ntsh4ck3d_by_stud3ntsh4ck3d_by_stud3ntsh4ck3d_by_stud3ntsh4ck3d_by_stud3ntsh4ck3d_by_stud3ntsh4ck3d_by_stud3ntsh4ck3d_by_stud3ntsh4ck3d_by_stud3ntsh4ck3d_by_stud3ntsh4ck3d_by_st
+```
+
+El mensaje se repite varias veces, pero la parte relevante es: `h4ck3d_by_stud3nts`. Aplicando el formato de la flag, la respuesta final es: `ikerlan{h4ck3d_by_stud3nts}`.
