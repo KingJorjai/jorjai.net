@@ -1,0 +1,33 @@
+---
+title: "Un camino olvidado (200)"
+---
+
+Esta página es la puerta de entrada a un laberinto de información. Hay un camino prohibido, una ruta que los robots de búsqueda no deben seguir. Pero tú no eres un robot. Encuentra la pista que te guiará al rincón secreto donde se esconde la flag.
+
+![Página principal](./assets/landing.png)
+
+## Análisis inicial
+
+La página nos da la bienvenida con el siguiente mensaje:
+
+> Hay un camino oculto para encontrar la siguiente flag. A los robots no les gusta que se visite, pero quizá a ti sí...
+
+En las páginas web, los archivos `robots.txt` son utilizados para indicar a los motores de búsqueda qué partes del sitio web no deben rastrear. Vamos a comprobar si existe este archivo en el sitio web.
+
+```none title="/robots.txt"
+User-agent: *
+Disallow: /admin
+Disallow: /logs
+Allow: /
+Disallow: /supersecretroute483284/index.html
+```
+
+El archivo `robots.txt` nos indica que hay una ruta llamada `/supersecretroute483284/index.html` que está prohibida para los robots. Vamos a intentar acceder a esa ruta.
+
+![Página secreta](./assets/flag.png)
+
+¡Hemos encontrado la flag!
+
+```
+ikerlan{robots_no_siempre_son_nuestros_amigos}
+```
