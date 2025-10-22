@@ -1,0 +1,263 @@
+---
+title: "RockPaperScissors (100)"
+---
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+¿Crees que puedes vencer al bot invencible de Piedra, Papel o Tijera?
+
+En esta aplicación Android encontrarás un juego aparentemente simple, pero hay algo más escondido en su interior. El bot parece conocer tus movimientos antes de que los hagas... ¿será realmente invencible o hay alguna forma de engañarlo?
+
+[Descargar APK](./assets/rockpaperscissorsrobot.apk)
+
+## Análisis inicial
+
+Antes de nada, voy a instalar la aplicación mi teléfono o en un emulador para ver cómo funciona. Al abrir la aplicación, se presenta una interfaz sencilla donde puedes jugar al clásico juego de Piedra, Papel o Tijera contra un bot. Eso sí, si te gustas ganar, ya puedes ir olvidándote, porque el bot siempre juega la opción que vence a la tuya.
+
+<img src={require('./assets/app-screenshot.jpg').default} alt="Captura de pantalla de la aplicación" width="33%" />
+
+Para entender cómo funciona el bot, vamos a descompilar el APK usando una herramienta como JADX-GUI. Al inspeccionar el código descompilado, navegamos hasta el paquete principal de la aplicación `com.example.rps_vault` y encontramos la clase `MainActivity.java`, que contiene la lógica del juego.
+
+En la función `F0` parece que se comparan las elecciones del jugador y del bot para determinar el resultado del juego. Las variables `i3` e `i4` representan las elecciones del jugador y del bot, respectivamente.
+
+
+<Tabs>
+<TabItem value="original-compararElecciones()" label="Código original">
+
+```java title="MainActivity.java" showLineNumbers=18
+    public final String F0(int i3, int i4) {
+        String[] strArr = {"Piedra", "Papel", "Tijera"};
+        String str = strArr[i3];
+        String str2 = strArr[i4];
+        if (i3 == i4) {
+            return "Tú: " + str + " | Bot: " + str2 + "\n¡Empate!";
+        }
+        if ((i3 == 0 && i4 == 2) || ((i3 == 1 && i4 == 0) || (i3 == 2 && i4 == 1))) {
+            return "Tú: " + str + " | Bot: " + str2 + "\n¡Ganaste!";
+        }
+        return "Tú: " + str + " | Bot: " + str2 + "\n¡Perdiste!";
+    }
+```
+</TabItem>
+<TabItem value="renombrado-compararElecciones()" label="Código renombrado">
+
+```java title="MainActivity.java" showLineNumbers=18
+    public final String compararElecciones(int jugador, int bot) {
+        String[] strArr = {"Piedra", "Papel", "Tijera"};
+        String strJugador = strArr[jugador];
+        String strBot = strArr[bot];
+        if (jugador == bot) {
+            return "Tú: " + strJugador + " | Bot: " + strBot + "\n¡Empate!";
+        }
+        if ((jugador == 0 && bot == 2) || ((jugador == 1 && bot == 0) || (jugador == 2 && bot == 1))) {
+            return "Tú: " + strJugador + " | Bot: " + strBot + "\n¡Ganaste!";
+        }
+        return "Tú: " + strJugador + " | Bot: " + strBot + "\n¡Perdiste!";
+    }
+```
+</TabItem>
+</Tabs>
+
+:::note
+Voy a ir renombrando las variables y funciones para que el código sea más legible. Esta es una buena práctica cuando se analiza código descompilado.
+:::
+
+La siguiente función `G0` genera la elección del bot. Aquí, `i3` representa la elección del jugador, y la función `a(i3)` parece calcular la elección del bot en función de la elección del jugador. Dependiendo del resultado, se actualiza el contador de victorias consecutivas y, si el jugador alcanza 3 victorias seguidas, se llama a la función `H0`, que muestra la flag del reto.
+
+<Tabs>
+<TabItem value="original-jugar()" label="Código original">
+
+```java title="MainActivity.java" showLineNumbers=30
+    public final void G0(int i3) {
+        String compararElecciones = compararElecciones(i3, this.J.a(i3));
+        this.E.setText(compararElecciones);
+        if (!compararElecciones.contains("¡Ganaste!")) {
+            this.I = 0;
+            I0();
+            return;
+        }
+        this.I++;
+        I0();
+        if (this.I >= 3) {
+            H0();
+        }
+    }
+```
+</TabItem>
+<TabItem value="renombrado-jugar()" label="Código renombrado">
+
+```java title="MainActivity.java" showLineNumbers=30
+    public final void jugar(int jugador) {
+        String resultado = compararElecciones(jugador, this.gameLogic.calcularOpcionGanadora(jugador));
+        this.descripcionTextView.setText(resultado);
+        if (!resultado.contains("¡Ganaste!")) {
+            this.victoriasConsecutivas = 0;
+            mostrarVictoriasConsecutivas();
+            return;
+        }
+        this.victoriasConsecutivas++;
+        mostrarVictoriasConsecutivas();
+        if (this.victoriasConsecutivas >= 3) {
+            mostrarFlag();
+        }
+    }
+```
+</TabItem>
+</Tabs>
+
+La función `H0` (renombrada a `mostrarFlag`) es la encargada de mostrar la flag cuando el jugador ha ganado 3 veces consecutivas. Aquí se llama a un método `a()` de un objeto `K`, que probablemente descifra o genera la flag. Se muestra un mensaje de éxito y se deshabilitan los botones del juego para evitar más interacciones.
+
+<Tabs>
+<TabItem value="original-mostrarFlag()" label="Código original">
+
+```java title="MainActivity.java" showLineNumbers=45
+    public final void mostrarFlag() {
+        try {
+            String a4 = this.K.a();
+            Toast.makeText(this, "¡IMPOSIBLE! Aquí está tu flag:", 1).show();
+            this.descripcionTextView.setText("🎉 FLAG CONSEGUIDA 🎉\n\n" + a4);
+            this.F.setEnabled(false);
+            this.G.setEnabled(false);
+            this.H.setEnabled(false);
+        } catch (Exception e3) {
+            this.descripcionTextView.setText("Error al descifrar flag: " + e3.getMessage());
+        }
+    }
+```
+</TabItem>
+<TabItem value="renombrado-mostrarFlag()" label="Código renombrado">
+
+```java title="MainActivity.java" showLineNumbers=45
+    public final void mostrarFlag() {
+        try {
+            String flag = this.cryptoManager.generarFlag();
+            Toast.makeText(this, "¡IMPOSIBLE! Aquí está tu flag:", 1).show();
+            this.descripcionTextView.setText("🎉 FLAG CONSEGUIDA 🎉\n\n" + flag);
+            this.piedraButton.setEnabled(false);
+            this.papelButton.setEnabled(false);
+            this.tijeraButton.setEnabled(false);
+        } catch (Exception e) {
+            this.descripcionTextView.setText("Error al descifrar flag: " + e3.getMessage());
+        }
+    }
+```
+</TabItem>
+</Tabs>
+
+## Analizando la clase `CryptoManager`
+
+Vamos a centrarnos en la clase `CryptoManager`, que parece ser la responsable de generar o descifrar la flag.
+
+<Tabs>
+<TabItem value="original-CryptoManager.java" label="Código original">
+
+```java title="CryptoManager.java" showLineNumbers=9
+public class CryptoManager {
+
+    public static final byte[] f2100c = {90, -61, 126, -111, 47, -72, 100, -41, 60, -23, 21, -90, 114, -53, 78, -16};
+    public Context f2101a;
+    public DatabaseHelper f2102b;
+
+    public CryptoManager(Context context) {
+        this.f2101a = context;
+        this.f2102b = new DatabaseHelper(context);
+    }
+
+    // highlight-start
+    public String generarFlag() {
+        byte[] decode = Base64.decode("GbYJxXzdE7APnHjTHr5jhg==", 0);
+        byte[] decode2 = Base64.decode("S/VIpBrfWKAKh2TBB6h6hg==", 0);
+        byte[] decode3 = Base64.decode("M6gb40PZCqxL2WL5C/s7ry3zEM5b0FeISYd3wxO/L5I2piHzH8wZ", 0);
+        byte[] bArr = f2100c;
+        byte[] b4 = b(decode, bArr);
+        byte[] b5 = b(decode2, bArr);
+        byte[] b6 = b(decode3, bArr);
+        Cipher.getInstance("AES/CBC/PKCS5Padding").init(2, new SecretKeySpec(b4, "AES"), new IvParameterSpec(b5));
+        return new String(b6, "UTF-8");
+    }
+    // highlight-end
+
+    public final byte[] b(byte[] bArr, byte[] bArr2) {
+        byte[] bArr3 = new byte[bArr.length];
+        for (int i3 = 0; i3 < bArr.length; i3++) {
+            bArr3[i3] = (byte) (bArr[i3] ^ bArr2[i3 % bArr2.length]);
+        }
+        return bArr3;
+    }
+}
+```
+</TabItem>
+<TabItem value="renombrado-CryptoManager.java" label="Código renombrado">
+
+```java title="CryptoManager.java" showLineNumbers=9
+public class CryptoManager {
+
+    public static final byte[] secret = {90, -61, 126, -111, 47, -72, 100, -41, 60, -23, 21, -90, 114, -53, 78, -16};
+    public Context context;
+    public DatabaseHelper databaseHelper;
+
+    public CryptoManager(Context context) {
+        this.context = context;
+        this.databaseHelper = new DatabaseHelper(context);
+    }
+
+    // highlight-start
+    public String generarFlag() {
+        byte[] preKey = Base64.decode("GbYJxXzdE7APnHjTHr5jhg==", 0);
+        byte[] preIV = Base64.decode("S/VIpBrfWKAKh2TBB6h6hg==", 0);
+        byte[] preFlag = Base64.decode("M6gb40PZCqxL2WL5C/s7ry3zEM5b0FeISYd3wxO/L5I2piHzH8wZ", 0);
+        byte[] localSecret = secret;
+        byte[] key = xor(preKey, localSecret);
+        byte[] iv = xor(preIV, localSecret);
+        byte[] flag = xor(preFlag, localSecret);
+        Cipher.getInstance("AES/CBC/PKCS5Padding").init(2, new SecretKeySpec(key, "AES"), new IvParameterSpec(iv));
+        return new String(flag, "UTF-8");
+    }
+    // highlight-end
+
+    public final byte[] xor(byte[] op1, byte[] op2) {
+        byte[] result = new byte[op1.length];
+        for (int index = 0; index < op1.length; index++) {
+            result[index] = (byte) (op1[index] ^ op2[index % op2.length]);
+        }
+        return result;
+    }
+}
+```
+</TabItem>
+</Tabs>
+
+Tras analizar la función `generarFlag`, podemos ver que utiliza tres cadenas codificadas en Base64 que son decodificadas y luego XOReadas con una clave secreta fija. El resultado de estas operaciones se utiliza para inicializar un cifrado AES en modo CBC, pero curiosamente, el resultado del cifrado no se utiliza para descifrar la flag, sino que simplemente se convierte a una cadena UTF-8 y se devuelve.
+
+## Resolviendo el reto
+
+Para resolver el reto, necesitamos replicar la lógica de la función `generarFlag`. Tenemos que la función `generarFlag()` devuelve el resultado de convertir a cadena UTF-8 el resultado de XORear la tercera cadena decodificada en Base64 con la clave secreta fija.
+
+Este podría ser un script en Python que realiza la operación para obtener la flag:
+
+```python title="b64decode_xor.py" showLineNumbers
+import base64
+
+def xor(data, key):
+    return bytes([data[i] ^ key[i % len(key)] for i in range(len(data))])
+
+secret_int = [90, -61, 126, -111, 47, -72, 100, -41, 60, -23, 21, -90, 114, -53, 78, -16]
+pre_flag_b64 = "M6gb40PZCqxL2WL5C/s7ry3zEM5b0FeISYd3wxO/L5I2piHzH8wZ"
+
+secret_bytes = bytes(x & 0xFF for x in secret_int)
+pre_flag_bytes = base64.b64decode(pre_flag_b64)
+flag_bytes = xor(pre_flag_bytes, secret_bytes)
+flag = flag_bytes.decode('utf-8')
+
+print(flag)
+```
+
+Al ejecutar este script, obtenemos la flag del reto:
+
+```
+ikerlan{w0w_y0u_w0n_th3_unbeatable_b0t}
+```
+
+:::note
+Le he puesto mucho cariño a este write-up. Durante la resolución del reto, no me tomé las molestias de ir renombrando todas las funciones y variables como he hecho aquí, sino que fui directamente a la función, vi que hacía un XOR y lo implementé en Python. Pero para el write-up he querido hacerlo más didáctico y legible.
+:::
