@@ -22,7 +22,7 @@ const config = {
   },
 
   // Set the production url of your site here
-  url: 'https://your-docusaurus-site.example.com',
+  url: 'https://jorjai.net',
   // Set the /<baseUrl>/ pathname under which your site is served
   // For GitHub pages deployment, it is often '/<projectName>/'
   baseUrl: '/',
@@ -99,7 +99,7 @@ const config = {
             position: 'left',
             label: 'CTF Writeups',
           },
-          // {to: '/blog', label: 'Blog', position: 'left'},
+          {to: '/blog', label: 'Blog', position: 'left'},
           {
             href: 'https://github.com/KingJorjai',
             label: 'GitHub',
@@ -135,18 +135,22 @@ const config = {
           {
             title: 'More',
             items: [
-              // {
-              //   label: 'Blog',
-              //   to: '/blog',
-              // },
+              {
+                label: 'Blog',
+                to: '/blog',
+              },
               {
                 label: 'GitHub',
                 href: 'https://github.com/KingJorjai',
               },
+              {
+                label: 'LinkedIn',
+                href: 'https://www.linkedin.com/in/jorge-arévalo-fernández/',
+              },
             ],
           },
         ],
-        // copyright: `Copyright © ${new Date().getFullYear()} My Project, Inc. Built with Docusaurus.`,
+        copyright: `Copyright © ${new Date().getFullYear()} Jorjai, Inc. Built with Docusaurus.`,
       },
       prism: {
         theme: prismThemes.github,
