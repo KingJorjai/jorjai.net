@@ -1,1 +1,0 @@
-"use strict";(globalThis.webpackChunkctf_writeups=globalThis.webpackChunkctf_writeups||[]).push([[472],{5513:e=>{e.exports=JSON.parse('{"title":"Recent posts","items":[{"title":"Bienvenida al blog","permalink":"/blog/2026/01/17/bienvenida","unlisted":false,"date":"2026-01-17T00:00:00.000Z"}]}')}}]);
