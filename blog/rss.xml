@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?><?xml-stylesheet type="text/xsl" href="rss.xsl"?>
+<rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+    <channel>
+        <title>Jorjai Blog</title>
+        <link>https://jorjai.net/blog</link>
+        <description>Jorjai Blog</description>
+        <lastBuildDate>Sat, 17 Jan 2026 00:00:00 GMT</lastBuildDate>
+        <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
+        <generator>https://github.com/jpmonette/feed</generator>
+        <language>es</language>
+        <item>
+            <title><![CDATA[Bienvenida al blog]]></title>
+            <link>https://jorjai.net/blog/2026/01/17/bienvenida</link>
+            <guid>https://jorjai.net/blog/2026/01/17/bienvenida</guid>
+            <pubDate>Sat, 17 Jan 2026 00:00:00 GMT</pubDate>
+            <description><![CDATA[Os doy la bienvenida a mi blog personal. Siempre me ha gustado escribir y compartir mis experiencias con el resto, y creo que ya era hora de tener un espacio propio para ello.]]></description>
+            <content:encoded><![CDATA[<p>Os doy la bienvenida a mi blog personal. Siempre me ha gustado escribir y compartir mis experiencias con el resto, y creo que ya era hora de tener un espacio propio para ello.</p>
+<p>Estos últimos años, he empezado a desarrollar algunos proyectos muy interesantes, al mismo tiempo que he aprovechado para participar en eventos de CTF y otras actividades relacionadas con la seguridad informática.</p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="quién-soy">¿Quién soy?<a href="https://jorjai.net/blog/2026/01/17/bienvenida#qui%C3%A9n-soy" class="hash-link" aria-label="Enlace directo al ¿Quién soy?" title="Enlace directo al ¿Quién soy?" translate="no">​</a></h2>
+<p>Me sorprendería que hubieras llegado hasta aquí sin saber quién soy, pero por si acaso: me llamo <strong>Jorge</strong> (en internet todo el mundo me conoce como <strong>Jorjai</strong>) y soy un friki de la informática.</p>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="mis-inicios">Mis inicios<a href="https://jorjai.net/blog/2026/01/17/bienvenida#mis-inicios" class="hash-link" aria-label="Enlace directo al Mis inicios" title="Enlace directo al Mis inicios" translate="no">​</a></h3>
+<p>Mi primer contacto con un ordenador fue a los <strong>5 años</strong>. Mi padre me enseñó a jugar a los míticos juegos hechos en Flash y tuve una infancia muy ligada a los videojuegos y la tecnología. Podréis imaginar que cuando no funcionaba el proyector de clase mis compañeros siempre gritaban:</p>
+<blockquote>
+<p>¡Jorge seguro que lo sabe arreglar!</p>
+</blockquote>
+<p>¿Y yo qué iba a saber? Pero trasteaba, tocaba botones y al final algo pasaba.</p>
+<p>Supongo que esa curiosidad por saber cómo funcionan las cosas es lo que me llevó a apuntarme a:</p>
+<ul>
+<li class="">Cursos de <strong>Scratch</strong></li>
+<li class="">Talleres de <strong>robótica</strong></li>
+<li class="">Clases de <strong>programación</strong></li>
+</ul>
+<p>...durante toda la primaria.</p>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="el-giro-inesperado">El giro inesperado<a href="https://jorjai.net/blog/2026/01/17/bienvenida#el-giro-inesperado" class="hash-link" aria-label="Enlace directo al El giro inesperado" title="Enlace directo al El giro inesperado" translate="no">​</a></h3>
+<p>Entrando en la adolescencia, empecé a interesarme por el <strong>desarrollo de videojuegos</strong>, algo natural dado mi amor por ellos. Mi entorno siempre me decía que tenía que estudiar algo relacionado con la informática, aunque a mí no me terminaba de convencer:</p>
+<blockquote>
+<p><em>Si empiezo a trabajar de algo que es mi hobby, entonces mi tiempo libre sería trabajo, ¿o no?</em></p>
+</blockquote>
+<p>Lo que sí sabía es que me gustaba la ciencia. En bachillerato elegí la rama de <strong>ciencias de la salud</strong>, con la firme intención de estudiar <strong>Bioquímica y Biología Molecular</strong>. Cuando digo firme intención, me refiero a una obsesión total. Aquí como me veis ahora, he sido (y sigo siendo) un sabelotodo de biología celular. Por algo mi palabra favorita es el <strong>ciclopentanoperhidrofenantreno</strong>, supongo.</p>
+<p>No fue hasta apenas <strong>dos semanas antes de la selectividad</strong> que cambié de opinión (para susto de mis padres). Creo que mi madre se sigue lamentando de que no vaya a ser un reconocido biólogo que haya descubierto algo importante...</p>
+<p>La informática ha sido un componente integral en mi vida desde siempre, y no sé por qué no me di cuenta antes de que era a lo que quería dedicarme. Aunque si lo pienso bien, <strong>no creo que haya tanta diferencia entre la biología molecular y la informática</strong>. Al fin y al cabo, ambas disciplinas tratan de entender sistemas complejos y resolver problemas mediante el análisis y la experimentación. Me parece muy interesante cómo los ingenieros muchas veces nos inspiramos en la naturaleza para resolver problemas técnicos; la evolución ya se ha ocupado de optimizar soluciones a lo largo de millones de años.
+En el fondo, guardo un cariño especial por la biología, y nunca perderé la esperanza de poder combinar ambas disciplinas en el futuro. Aunque algunos se empeñan en negármelo, siempre seré <em>«de bio»</em>.</p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="quién-quiero-ser">¿Quién quiero ser?<a href="https://jorjai.net/blog/2026/01/17/bienvenida#qui%C3%A9n-quiero-ser" class="hash-link" aria-label="Enlace directo al ¿Quién quiero ser?" title="Enlace directo al ¿Quién quiero ser?" translate="no">​</a></h2>
+<p>Todavía no sé bien en qué me quiero especializar dentro de este mundillo — es un verdadero problema que me guste casi todo. Imagino que el blog también servirá como una especie de <strong>diario personal</strong> para ver mi evolución en el tiempo y cómo van cambiando mis intereses.</p>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="mi-descubrimiento-la-ciberseguridad">Mi descubrimiento: la ciberseguridad<a href="https://jorjai.net/blog/2026/01/17/bienvenida#mi-descubrimiento-la-ciberseguridad" class="hash-link" aria-label="Enlace directo al Mi descubrimiento: la ciberseguridad" title="Enlace directo al Mi descubrimiento: la ciberseguridad" translate="no">​</a></h3>
+<p>En este momento, lo que más me atrae es la <strong>ciberseguridad</strong>. La empecé a descubrir hace relativamente poco, cuando en abril del año pasado participé en el <a href="https://tryhackme.com/room/HackfinityBattle" target="_blank" rel="noopener noreferrer" class="">Hackfinity Battle de Try Hack Me</a>. Después de eso, me apunté al <a href="https://www.ikerlan.es/actualidad/ikerlan-lanza-primer-reto-universitario-ciberseguridad-euskadi" target="_blank" rel="noopener noreferrer" class="">IK3RL4N CTF de Ikerlan</a> y el hecho de que nuestro equipo no solo se clasificara para la fase presencial, sino que también obtuviera el <strong>primer puesto</strong>, me sorprendió muchísimo. Era consciente de que había aprendido mucho en poco tiempo, pero no esperaba llegar tan lejos.</p>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="prácticas">¿Prácticas?<a href="https://jorjai.net/blog/2026/01/17/bienvenida#pr%C3%A1cticas" class="hash-link" aria-label="Enlace directo al ¿Prácticas?" title="Enlace directo al ¿Prácticas?" translate="no">​</a></h3>
+<p>Gracias a ese evento, he estado en contacto con la gente de <strong>Ikerlan</strong>, que me ha ofrecido la oportunidad de hacer unas prácticas durante el segundo cuatrimestre de este curso.</p>
+<p>Me muero de ganas por empezar porque:</p>
+<ul class="contains-task-list containsTaskList_mC6p">
+<li class="task-list-item"><input type="checkbox" disabled="" checked=""> <!-- -->Hay un <strong>objetivo claro</strong> que me motiva</li>
+<li class="task-list-item"><input type="checkbox" disabled="" checked=""> <!-- -->Estaré rodeado de <strong>gente con experiencia</strong> en ciberseguridad</li>
+<li class="task-list-item"><input type="checkbox" disabled="" checked=""> <!-- -->Podré <strong>aprender directamente</strong> de profesionales del sector</li>
+</ul>
+<p>No quiero olvidarme de otras áreas que también me llaman la atención, como la <strong>programación de bajo nivel</strong>, la <strong>arquitectura de computadores</strong> y el <strong>desarrollo de sistemas embebidos</strong>.</p>
+<p>Por otro lado, me atraen la <strong>administración de sistemas</strong> y el <strong>home lab</strong>. Me encanta la idea de tener un laboratorio casero donde poder experimentar con diferentes tecnologías, montar servidores, virtualizar entornos y aprender haciendo. Es una forma práctica de entender cómo funcionan las infraestructuras reales y de poder romper cosas sin miedo a las consecuencias.</p>
+<p>No sé si lo he dicho (creo que no), pero me encanta desmontar y montar cosas.</p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="qué-encontrarás-aquí">¿Qué encontrarás aquí?<a href="https://jorjai.net/blog/2026/01/17/bienvenida#qu%C3%A9-encontrar%C3%A1s-aqu%C3%AD" class="hash-link" aria-label="Enlace directo al ¿Qué encontrarás aquí?" title="Enlace directo al ¿Qué encontrarás aquí?" translate="no">​</a></h2>
+<p>Lo más probable es que os cuente qué tal me van las cosas que voy haciendo. Si lo considero interesante, acabará siendo más una <strong>guía práctica</strong> que un simple post de "hoy he hecho esto".</p>
+<p>Fluiré con lo que me apetezca escribir en cada momento, pero espero que el contenido sea útil para alguien más además de a mí.</p>
+<p>Como pequeño spoiler para el siguiente post: <em>me gusta automatizar cosas</em>.</p>
+<hr>
+<p><strong>¡Espero que disfrutes el contenido!</strong> 🚀</p>]]></content:encoded>
+            <category>personal</category>
+        </item>
+    </channel>
+</rss>
