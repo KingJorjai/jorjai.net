@@ -34,3 +34,9 @@
   border-radius: 50%;
   border: 2px solid var(--ifm-color-primary);
 }
+
+/* Texto justificado en artículos y documentación */
+article p,
+.markdown p {
+  text-align: justify;
+}
