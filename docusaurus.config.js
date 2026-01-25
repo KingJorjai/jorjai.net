@@ -157,6 +157,16 @@ const config = {
         darkTheme: prismThemes.dracula,
         additionalLanguages: ['bash', 'php', 'java'],
       },
+      zoom: {
+        selector: '.markdown img',
+        background: {
+            light: 'rgb(255, 255, 255)',
+            dark: 'rgb(50, 50, 50)'
+        },
+        config: {
+          // options you can specify via https://github.com/francoischalifour/medium-zoom#usage
+        }
+      }
     }),
   // Add external stylesheets (KaTeX for math rendering)
   stylesheets: [
@@ -168,6 +178,7 @@ const config = {
       crossorigin: 'anonymous',
     },
   ],
+  plugins: ['docusaurus-plugin-image-zoom'],
 };
 
 export default config;

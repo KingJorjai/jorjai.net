@@ -40,3 +40,9 @@ article p,
 .markdown p {
   text-align: justify;
 }
+
+/* Asegura que la imagen con zoom aparezca por encima del navbar */
+.medium-zoom-overlay,
+.medium-zoom-image--opened {
+  z-index: 2000 !important;
+}

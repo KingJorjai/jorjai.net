@@ -76,4 +76,4 @@ Como pequeño spoiler para el siguiente post: *me gusta automatizar cosas*.
 
 ---
 
-**¡Espero que disfrutes el contenido!** 🚀
+**¡Espero que disfrutes el contenido!**
