@@ -14,7 +14,11 @@ Hoy me gustaría hablar sobre un proyecto personal que comencé en febrero del a
 
 <!-- truncate -->
 
-Pero, ¡no temáis! Porque el ayuntamiento ofrece una **aplicación para el móvil** que da los tiempos de llegada **en tiempo real**. *"Entonces, ¿cuál es el problema?"*, os preguntaréis. Pues en realidad, ninguno. Solo que todos los días al final de la última clase, tengo que sacar el móvil, abrir la app, buscar la parada, y mirar cuánto le queda a mi bus. Dependiendo de lo que ponga, sé si tengo que correr o no. Y yo no sé vosotrxs, pero si estudio ingeniería es para que mi vida sea eficiente. Y no os voy a mentir, me da mucha pereza tener que hacer todo eso.
+Pero, ¡no temáis! Porque el ayuntamiento ofrece una **aplicación para el móvil** que da los tiempos de llegada **en tiempo real**.
+
+<img src={require('./assets/dbus-app.jpg').default} alt="Aplicación de d·bus" style={{maxWidth: '50%', height: 'auto'}} />
+
+*"Entonces, ¿cuál es el problema?"*, os preguntaréis. Pues en realidad, ninguno. Solo que todos los días al final de la última clase, tengo que sacar el móvil, abrir la app, buscar la parada, y mirar cuánto le queda a mi bus. Dependiendo de lo que ponga, sé si tengo que correr o no. Y yo no sé vosotrxs, pero si estudio ingeniería es para que mi vida sea eficiente. Y no os voy a mentir, me da mucha pereza tener que hacer todo eso.
 
 Así que pensé: *"No sería increíble que me llegara un mensaje al móvil **justo** cuando mi bus esté a 7 minutos de llegar?"*.
 
